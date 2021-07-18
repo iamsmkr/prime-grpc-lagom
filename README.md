@@ -1,1 +1,1 @@
-# prime-number-publisher
+# prime-grpc-lagom
