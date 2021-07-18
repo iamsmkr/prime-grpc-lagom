@@ -1,4 +1,4 @@
-name := "prime-number-publisher"
+name := "prime-grpc-lagom"
 
 version := "0.1"
 
