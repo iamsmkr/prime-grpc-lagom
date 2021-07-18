@@ -1,5 +1,5 @@
 val lagomVersion = "1.6.5"
-val akkaGrpcVersion = "2.1.0-M1"
+val akkaGrpcVersion = "1.0.3"
 val playGrpcVersion = "0.9.1"
 
 addSbtPlugin("com.lightbend.lagom" % "lagom-sbt-plugin" % lagomVersion)

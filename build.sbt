@@ -40,6 +40,7 @@ lazy val `prime-number-server` = (project in file("prime-number-server"))
     libraryDependencies ++= Seq(
       lagomScaladslTestKit,
       macwire,
+      akkaHttp,
       playGrpcRuntime,
       scalaTest,
       lagomGrpcTestkit
@@ -64,6 +65,7 @@ lazy val `proxy-server-impl` = (project in file("proxy-server-impl"))
     lagomScaladslTestKit,
     playGrpcRuntime,
     macwire,
+    akkaHttp,
     scalaTest
   ),
 
@@ -78,4 +80,4 @@ ThisBuild / lagomKafkaEnabled := false
 
 // This adds an entry on the LagomDevMode Service Registry. With this information on the Service Registry a client
 // using Service Discovery to Lookup("helloworld.GreeterService") will get "http://localhost:11000" and then be able to send a request.
-ThisBuild / lagomUnmanagedServices := Map("helloworld.GreeterService" -> s"http://localhost:${`prime-number-server-HTTP-port`}")
+ThisBuild / lagomUnmanagedServices := Map("primenumber.PrimeNumberPublisherService" -> s"http://localhost:${`prime-number-server-HTTP-port`}")
