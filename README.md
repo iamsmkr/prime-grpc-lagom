@@ -1,1 +1,1 @@
-# prime-grpc-lagom
+# prime-grpc-scala
