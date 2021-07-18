@@ -1,4 +1,4 @@
-name := "prime-grpc-lagom"
+name := "prime-grpc-scala"
 
 version := "0.1"
 
