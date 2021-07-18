@@ -14,11 +14,11 @@ def dockerSettings = Seq(
 )
 
 lazy val `prime-grpc-scala` = (project in file("."))
-  .aggregate(`prime-number-server`, `proxy-server-api`, `proxy-server-impl`)
+  .aggregate(`prime-generator`, `prime-proxy-api`, `prime-proxy-impl`)
 
-lazy val `prime-number-server-HTTP-port` = 11000
+lazy val `prime-generator-HTTP-port` = 11000
 
-lazy val `prime-number-server` = (project in file("prime-number-server"))
+lazy val `prime-generator` = (project in file("prime-generator"))
   .enablePlugins(LagomScala)
   .enablePlugins(AkkaGrpcPlugin)
   .enablePlugins(PlayAkkaHttp2Support)
@@ -35,7 +35,8 @@ lazy val `prime-number-server` = (project in file("prime-number-server"))
 
     // WORKAROUND: lagom still can't register a service under the gRPC name so we hard-code
     // the port and the use the value to add the entry on the Service Registry
-    lagomServiceHttpPort := `prime-number-server-HTTP-port`,
+    lagomServiceHttpPort := `prime-generator-HTTP-port`,
+    lagomServiceAddress := "0.0.0.0",
 
     libraryDependencies ++= Seq(
       lagomScaladslTestKit,
@@ -48,12 +49,12 @@ lazy val `prime-number-server` = (project in file("prime-number-server"))
   ).settings(lagomForkedTestSettings: _*)
   .settings(dockerSettings)
 
-lazy val `proxy-server-api` = (project in file("proxy-server-api"))
+lazy val `prime-proxy-api` = (project in file("prime-proxy-api"))
   .settings(
     libraryDependencies += lagomScaladslApi
   )
 
-lazy val `proxy-server-impl` = (project in file("proxy-server-impl"))
+lazy val `prime-proxy-impl` = (project in file("prime-proxy-impl"))
   .enablePlugins(LagomScala)
   .enablePlugins(AkkaGrpcPlugin)
   .settings(
@@ -70,14 +71,15 @@ lazy val `proxy-server-impl` = (project in file("proxy-server-impl"))
   ),
 
   // WORKAROUND: for akka discovery method lookup in dev-mode
-  lagomDevSettings := Seq("akka.discovery.method" -> "lagom-dev-mode")
+  lagomDevSettings := Seq("akka.discovery.method" -> "lagom-dev-mode"),
+  lagomServiceAddress := "0.0.0.0"
 )
   .settings(dockerSettings)
-  .dependsOn(`proxy-server-api`)
+  .dependsOn(`prime-proxy-api`)
 
 ThisBuild / lagomCassandraEnabled := false
 ThisBuild / lagomKafkaEnabled := false
 
 // This adds an entry on the LagomDevMode Service Registry. With this information on the Service Registry a client
-// using Service Discovery to Lookup("helloworld.GreeterService") will get "http://localhost:11000" and then be able to send a request.
-ThisBuild / lagomUnmanagedServices := Map("primenumber.PrimeNumberPublisherService" -> s"http://localhost:${`prime-number-server-HTTP-port`}")
+// using Service Discovery to Lookup("prime.PrimeGeneratorService") will get "http://127.0.0.1:11000" and then be able to send a request.
+ThisBuild / lagomUnmanagedServices := Map("prime.PrimeGeneratorService" -> s"http://127.0.0.1:${`prime-generator-HTTP-port`}")
