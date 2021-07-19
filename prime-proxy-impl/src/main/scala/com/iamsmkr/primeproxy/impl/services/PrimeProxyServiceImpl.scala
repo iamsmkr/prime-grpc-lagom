@@ -17,7 +17,7 @@ class PrimeProxyServiceImpl(primeGeneratorGrpcServiceClient: PrimeGeneratorServi
   override def getPrimeNumbers(n: Long): ServiceCall[NotUsed, String] = ServiceCall { _ =>
 
     if (n < 0) throw BadRequest("Negative numbers not allowed")
-    if (n <= 2) throw BadRequest("Please provide a number greater 1")
+    if (n < 2) throw BadRequest("Please provide a number greater 1")
 
     primeGeneratorGrpcServiceClient
       .getPrimeNumbers(GetPrimeNumbersRequest(n))
