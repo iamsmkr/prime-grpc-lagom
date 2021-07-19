@@ -12,7 +12,6 @@ import com.softwaremill.macwire.wire
 import play.api.libs.ws.ahc.AhcWSComponents
 
 import scala.concurrent.ExecutionContextExecutor
-import scala.concurrent.duration.Duration
 
 abstract class PrimeProxyApplication(context: LagomApplicationContext)
   extends LagomApplication(context) with AhcWSComponents {
@@ -25,7 +24,6 @@ abstract class PrimeProxyApplication(context: LagomApplicationContext)
     .withServicePortName("http")
     .withServiceProtocol("tcp")
     .withTls(false)
-    .withDeadline(Duration.create(5, TimeUnit.SECONDS))
     .withConnectionAttempts(5)
 
   lazy val primeGeneratorGrpcServiceClient = PrimeGeneratorServiceClient(settings)
