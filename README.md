@@ -1,5 +1,11 @@
 # prime-grpc-scala
 
+## Dev
+Lagom plugin exposes single `runAll` command to start all services besides service locator and service gateway. All the APIs could be reached `@localhost:9000`.
+```
+$ sbt runAll
+```
+
 ## Deploy
 1. Install minikube
 ```sh
