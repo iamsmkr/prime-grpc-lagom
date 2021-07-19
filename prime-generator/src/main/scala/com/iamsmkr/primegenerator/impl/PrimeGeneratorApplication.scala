@@ -8,7 +8,7 @@ import com.softwaremill.macwire.wire
 import play.api.libs.ws.ahc.AhcWSComponents
 
 trait PrimeGeneratorService extends Service {
-  override def descriptor: Descriptor = named("prime-generator")
+  override def descriptor: Descriptor = named("prime-generator-srvc")
 }
 
 class PrimeGeneratorServiceImpl() extends PrimeGeneratorService
