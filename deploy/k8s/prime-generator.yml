@@ -1,0 +1,53 @@
+---
+apiVersion: "apps/v1"
+kind: Deployment
+metadata:
+  name: "prime-generator-v1-0-snapshot"
+  labels:
+    app: prime-generator-srvc
+    appName: prime-generator-srvc
+    appNameVersion: "prime-generator-v1-0-snapshot"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      appNameVersion: "prime-generator-v1-0-snapshot"
+  template:
+    metadata:
+      labels:
+        app: prime-generator-srvc
+        appName: prime-generator-srvc
+        appNameVersion: "prime-generator-v1-0-snapshot"
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: prime-generator
+          image: "iamsmkr/prime-generator:1.0-SNAPSHOT"
+          imagePullPolicy: Never
+          env:
+            # normally APPLICATION_SECRET would be set from the k8s secret store
+            - name: APPLICATION_SECRET
+              value: "asdf1234"
+            - name: JAVA_OPTS
+              value: "-Dconfig.resource=prod-application.conf"
+          ports:
+            - containerPort: 9000
+              name: http
+          volumeMounts: []
+      volumes: []
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: prime-generator-srvc
+    appName: prime-generator-srvc
+  name: prime-generator-srvc
+spec:
+  ports:
+    - name: http
+      port: 11000
+      protocol: TCP
+      targetPort: 9000
+  selector:
+    appName: prime-generator-srvc

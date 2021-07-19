@@ -1,7 +1,5 @@
 package com.iamsmkr.primeproxy.impl
 
-import java.util.concurrent.TimeUnit
-
 import akka.actor.{ActorSystem, CoordinatedShutdown}
 import akka.grpc.GrpcClientSettings
 import com.iamsmkr.primegenerator.grpc.PrimeGeneratorServiceClient
@@ -20,7 +18,7 @@ abstract class PrimeProxyApplication(context: LagomApplicationContext)
   private implicit val sys: ActorSystem = actorSystem
 
   private lazy val settings = GrpcClientSettings
-    .usingServiceDiscovery("prime-generator")
+    .usingServiceDiscovery("prime-generator-srvc")
     .withServicePortName("http")
     .withServiceProtocol("tcp")
     .withTls(false)
